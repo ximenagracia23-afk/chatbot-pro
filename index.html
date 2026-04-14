@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Chatbot</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.chat-container {
+    width: 360px;
+    height: 520px;
+    background: #1e293b;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.header {
+    background: #22c55e;
+    padding: 10px;
+    text-align: center;
+}
+.chat-box {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+.message {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 12px;
+}
+.user { background: #3b82f6; }
+.bot { background: #334155; }
+
+.input-area {
+    display: flex;
+}
+input {
+    flex: 1;
+    padding: 10px;
+}
+button {
+    background: #22c55e;
+    border: none;
+    padding: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="chat-container">
+    <div class="header" id="header">Chatbot</div>
+    <div class="chat-box" id="chat"></div>
+
+    <div class="input-area">
+        <input id="input">
+        <button onclick="send()">Enviar</button>
+    </div>
+</div>
+
+<script>
+// CARGAR CONFIG
+const saved = JSON.parse(localStorage.getItem("config")) || {
+    nombre: "Mi Negocio",
+    telefono: "000",
+    precios: "Precios no definidos",
+    servicios: "Servicios no definidos"
+};
+
+document.getElementById("header").innerText = saved.nombre;
+
+const chat = document.getElementById("chat");
+
+function add(text, type) {
+    const div = document.createElement("div");
+    div.className = "message " + type;
+    div.innerText = text;
+    chat.appendChild(div);
+}
+
+function bot(msg) {
+    msg = msg.toLowerCase();
+
+    if (msg.includes("hola")) return "Hola 👋 Bienvenido a " + saved.nombre;
+    if (msg.includes("precio")) return saved.precios;
+    if (msg.includes("servicio")) return saved.servicios;
+    if (msg.includes("contacto")) return "WhatsApp: " + saved.telefono;
+
+    return "Escribe: precios, servicios o contacto";
+}
+
+function send() {
+    const input = document.getElementById("input");
+    add(input.value, "user");
+
+    setTimeout(() => {
+        add(bot(input.value), "bot");
+    }, 500);
+
+    input.value = "";
+}
+
+add("Hola 👋 escribe 'hola' para comenzar", "bot");
+</script>
+
+</body>
+</html>

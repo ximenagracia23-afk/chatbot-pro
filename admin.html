@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Panel Admin</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.container {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 15px;
+    width: 300px;
+}
+input {
+    width: 100%;
+    margin: 5px 0;
+    padding: 8px;
+}
+button {
+    width: 100%;
+    padding: 10px;
+    background: #22c55e;
+    border: none;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h3>Configurar Chatbot</h3>
+
+    <input id="nombre" placeholder="Nombre del negocio">
+    <input id="telefono" placeholder="Teléfono">
+    <input id="precios" placeholder="Precios">
+    <input id="servicios" placeholder="Servicios">
+
+    <button onclick="guardar()">Guardar</button>
+</div>
+
+<script>
+function guardar() {
+    const config = {
+        nombre: document.getElementById("nombre").value,
+        telefono: document.getElementById("telefono").value,
+        precios: document.getElementById("precios").value,
+        servicios: document.getElementById("servicios").value
+    };
+
+    localStorage.setItem("config", JSON.stringify(config));
+
+    alert("Guardado correctamente ✅");
+}
+</script>
+
+</body>
+</html>
