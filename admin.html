@@ -6,61 +6,94 @@
 
 <style>
 body {
-    font-family: Arial;
-    background: #0f172a;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  font-family: Arial;
+  background: #020617;
+  color: white;
+  padding: 20px;
 }
-.container {
-    background: #1e293b;
-    padding: 20px;
-    border-radius: 15px;
-    width: 300px;
+
+h1 {
+  text-align: center;
 }
+
+.card {
+  background: #1e293b;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+}
+
 input {
-    width: 100%;
-    margin: 5px 0;
-    padding: 8px;
+  padding: 10px;
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
 }
+
 button {
-    width: 100%;
-    padding: 10px;
-    background: #22c55e;
-    border: none;
-    color: white;
+  padding: 10px;
+  margin-top: 10px;
+  background: #22c55e;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.danger {
+  background: red;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h3>Configurar Chatbot</h3>
+<h1>📊 Panel Admin</h1>
 
-    <input id="nombre" placeholder="Nombre del negocio">
-    <input id="telefono" placeholder="Teléfono">
-    <input id="precios" placeholder="Precios">
-    <input id="servicios" placeholder="Servicios">
+<h2>⚙️ Configurar WhatsApp</h2>
+<input id="numero" placeholder="Ej: 593999999999">
+<button onclick="guardarNumero()">Guardar número</button>
 
-    <button onclick="guardar()">Guardar</button>
-</div>
+<h2>👥 Clientes</h2>
+<div id="clientes"></div>
+
+<button class="danger" onclick="borrar()">🗑️ Borrar clientes</button>
 
 <script>
-function guardar() {
-    const config = {
-        nombre: document.getElementById("nombre").value,
-        telefono: document.getElementById("telefono").value,
-        precios: document.getElementById("precios").value,
-        servicios: document.getElementById("servicios").value
-    };
+function cargar() {
+  let datos = JSON.parse(localStorage.getItem("clientes")) || [];
+  let contenedor = document.getElementById("clientes");
 
-    localStorage.setItem("config", JSON.stringify(config));
+  contenedor.innerHTML = "";
 
-    alert("Guardado correctamente ✅");
+  datos.reverse().forEach(c => {
+    contenedor.innerHTML += `
+      <div class="card">
+        💬 ${c.mensaje}<br>
+        🕒 ${c.fecha}
+      </div>
+    `;
+  });
+
+  document.getElementById("numero").value =
+    localStorage.getItem("whatsapp") || "";
 }
+
+// guardar número
+function guardarNumero() {
+  let numero = document.getElementById("numero").value;
+  localStorage.setItem("whatsapp", numero);
+  alert("✅ Número guardado");
+}
+
+// borrar clientes
+function borrar() {
+  localStorage.removeItem("clientes");
+  cargar();
+}
+
+cargar();
 </script>
 
 </body>
